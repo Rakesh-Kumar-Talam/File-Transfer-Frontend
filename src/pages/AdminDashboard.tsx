@@ -12,6 +12,8 @@ import {
     RefreshCw
 } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
+import { API_URL } from '../config';
+
 
 interface Stats {
     totalUsers: number;
@@ -34,8 +36,9 @@ const AdminDashboard: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }
         try {
             const token = localStorage.getItem('authToken');
             const [statsRes, logsRes] = await Promise.all([
-                fetch('/api/admin/dashboard', { headers: { 'Authorization': `Bearer ${token}` } }),
-                fetch('/api/admin/audit-logs?limit=5', { headers: { 'Authorization': `Bearer ${token}` } })
+                fetch(`${API_URL}/admin/dashboard`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                fetch(`${API_URL}/admin/audit-logs?limit=5`, { headers: { 'Authorization': `Bearer ${token}` } })
+
             ]);
 
             const statsData = await statsRes.json();

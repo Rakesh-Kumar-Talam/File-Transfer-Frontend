@@ -12,6 +12,8 @@ import {
     Download
 } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
+import { API_URL } from '../config';
+
 
 interface FileRecord {
     fileId: string;
@@ -46,7 +48,8 @@ const AdminFiles: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }> = 
         setLoading(true);
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('/api/admin/files', {
+            const response = await fetch(`${API_URL}/admin/files`, {
+
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -85,7 +88,8 @@ const AdminFiles: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }> = 
 
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`/api/admin/files/${selectedFile.fileId}/policy`, {
+            const response = await fetch(`${API_URL}/admin/files/${selectedFile.fileId}/policy`, {
+
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -111,7 +115,8 @@ const AdminFiles: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }> = 
 
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`/api/admin/files/${fileId}/revoke`, {
+            const response = await fetch(`${API_URL}/admin/files/${fileId}/revoke`, {
+
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -132,7 +137,8 @@ const AdminFiles: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }> = 
             const token = localStorage.getItem('authToken');
 
             // 1. Get superuser access token and keys
-            const accessRes = await fetch(`/api/admin/files/${file.fileId}/audit-access`, {
+            const accessRes = await fetch(`${API_URL}/admin/files/${file.fileId}/audit-access`, {
+
                 headers: { 'Authorization': `Bearer ${token}` }
             });
 
@@ -144,7 +150,8 @@ const AdminFiles: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }> = 
             if (!keyToUse) throw new Error('No decryption keys available for this file.');
 
             // 2. Fetch encrypted blob
-            const ipfsUrl = `/api/files/ipfs/${ipfsCID}`;
+            const ipfsUrl = `${API_URL}/files/ipfs/${ipfsCID}`;
+
             const response = await fetch(ipfsUrl, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });

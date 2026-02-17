@@ -15,6 +15,8 @@ import {
     Loader2
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { API_URL } from '../config';
+
 
 interface DashboardPageProps {
     toggleDarkMode: () => void;
@@ -38,7 +40,8 @@ const DashboardPage = ({ toggleDarkMode, darkMode }: DashboardPageProps) => {
         const fetchFiles = async () => {
             if (!token) return;
             try {
-                const response = await fetch('/api/files/my-files', {
+                const response = await fetch(`${API_URL}/files/my-files`, {
+
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const data = await response.json();

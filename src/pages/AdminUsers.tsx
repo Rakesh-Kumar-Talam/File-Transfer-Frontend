@@ -10,6 +10,8 @@ import {
     Wallet
 } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
+import { API_URL } from '../config';
+
 
 interface User {
     userId: string;
@@ -31,7 +33,8 @@ const AdminUsers: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }> = 
     const fetchUsers = async () => {
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch('/api/admin/users', {
+            const response = await fetch(`${API_URL}/admin/users`, {
+
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -56,7 +59,8 @@ const AdminUsers: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }> = 
         setActionLoading(userId);
         try {
             const token = localStorage.getItem('authToken');
-            const response = await fetch(`/api/admin/users/${userId}/toggle-freeze`, {
+            const response = await fetch(`${API_URL}/admin/users/${userId}/toggle-freeze`, {
+
                 method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,

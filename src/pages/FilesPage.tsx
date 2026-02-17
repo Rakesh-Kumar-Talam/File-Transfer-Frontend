@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { API_URL } from '../config';
+
 
 const FilesPage = () => {
     const navigate = useNavigate();
@@ -37,7 +39,8 @@ const FilesPage = () => {
         if (!token) return;
         setIsLoading(true);
         try {
-            const response = await fetch('/api/files/my-files', {
+            const response = await fetch(`${API_URL}/files/my-files`, {
+
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();
@@ -71,7 +74,8 @@ const FilesPage = () => {
             console.log(`Requesting access for ${file.name}...`);
 
             // 1. Request Access (Fetch Key & Token)
-            const accessResponse = await fetch(`/api/files/${file.fileId}/access`, {
+            const accessResponse = await fetch(`${API_URL}/files/${file.fileId}/access`, {
+
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${token}` }
             });
@@ -89,7 +93,8 @@ const FilesPage = () => {
             console.log(`Downloading encrypted blob from IPFS...`);
 
             // 2. Fetch encrypted blob from IPFS (via backend proxy to avoid CORS)
-            const ipfsUrl = `/api/files/ipfs/${ipfsCID}`;
+            const ipfsUrl = `${API_URL}/files/ipfs/${ipfsCID}`;
+
             const response = await fetch(ipfsUrl, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });

@@ -5,6 +5,8 @@ import { Wallet, Mail, Shield, AlertCircle, Loader2 } from 'lucide-react';
 import { BrowserProvider } from 'ethers';
 import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
+import { API_URL } from '../config';
+
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -47,11 +49,12 @@ const LoginPage = () => {
             const walletAddress = await signer.getAddress();
 
             // 1. Get nonce from server
-            const nonceResponse = await fetch('/api/auth/wallet/nonce', {
+            const nonceResponse = await fetch(`${API_URL}/auth/wallet/nonce`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ walletAddress }),
             });
+
             const { nonce } = await nonceResponse.json();
 
             // 2. Sign the message
@@ -59,11 +62,12 @@ const LoginPage = () => {
             const signature = await signer.signMessage(message);
 
             // 3. Verify with server
-            const verifyResponse = await fetch('/api/auth/wallet/verify', {
+            const verifyResponse = await fetch(`${API_URL}/auth/wallet/verify`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ walletAddress, signature, role: selectedRole }),
             });
+
 
             if (!verifyResponse.ok) {
                 const errData = await verifyResponse.json();
@@ -85,9 +89,9 @@ const LoginPage = () => {
 
     const handleGoogleLogin = () => {
         // Redirect to backend Google OAuth endpoint with selected role as state
-        const backendUrl = '/api/auth/google';
-        window.location.href = `${backendUrl}?role=${selectedRole}`;
+        window.location.href = `${API_URL}/auth/google?role=${selectedRole}`;
     };
+
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-secondary-50 dark:from-dark-900 dark:via-dark-800 dark:to-dark-900 flex items-center justify-center px-4">

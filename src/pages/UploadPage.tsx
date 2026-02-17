@@ -17,6 +17,8 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { processFileForUpload } from '../utils/crypto';
+import { API_URL } from '../config';
+
 
 const UploadPage = () => {
     const navigate = useNavigate();
@@ -78,7 +80,8 @@ const UploadPage = () => {
             formData.append('wrappedKey', wrappedKey);
             formData.append('ivs', JSON.stringify(ivs));
 
-            const response = await fetch('/api/files/register', {
+            const response = await fetch(`${API_URL}/files/register`, {
+
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`

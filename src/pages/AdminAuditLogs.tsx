@@ -13,6 +13,8 @@ import {
     Clock
 } from 'lucide-react';
 import AdminLayout from '../components/admin/AdminLayout';
+import { API_URL } from '../config';
+
 
 interface AuditLog {
     _id: string;
@@ -38,7 +40,8 @@ const AdminAuditLogs: React.FC<{ toggleDarkMode: () => void; darkMode: boolean }
     const fetchLogs = async () => {
         try {
             const token = localStorage.getItem('authToken');
-            let url = '/api/admin/audit-logs?limit=100';
+            let url = `${API_URL}/admin/audit-logs?limit=100`;
+
             if (filter) url += `&type=${filter}`;
 
             const response = await fetch(url, {
